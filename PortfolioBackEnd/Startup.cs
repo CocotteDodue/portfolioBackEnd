@@ -1,10 +1,13 @@
-﻿using System;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using PortfolioBackEnd.ExtensionMethods;
 
 namespace PortfolioBackEnd
 {
@@ -17,13 +20,15 @@ namespace PortfolioBackEnd
 
         public IConfiguration Configuration { get; }
 
+        public IContainer AppContainer { get; set; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider /*void*/ ConfigureServices(IServiceCollection services)
         {
             ConfigureDatabaseService(services);
 
             services.AddMvc();
-            
+
             // Swagger config
             services.AddSwaggerGen(c =>
             {
@@ -36,10 +41,13 @@ namespace PortfolioBackEnd
                     License = new License { Name = "Developed and distributed under the MIT License", Url = "https://opensource.org/licenses/MIT" }
                 });
             });
+            
+            AppContainer = services.AddIoC();
+            return new AutofacServiceProvider(AppContainer);
         }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime appLifetime)
         {
             if (env.IsDevelopment())
             {
@@ -49,6 +57,9 @@ namespace PortfolioBackEnd
             ConfigureSwagger(app, env);
 
             app.UseMvc();
+
+            // properly dispose of the IoC AppContainer when the request is done
+            appLifetime.ApplicationStopped.Register(() => AppContainer.Dispose());
         }
         private void ConfigureDatabaseService(IServiceCollection services)
         {
