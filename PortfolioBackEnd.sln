@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioBackEnd", "PortfolioBackEnd\PortfolioBackEnd.csproj", "{829BCAD7-8332-4E2D-8739-01420853260D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioBackEnd", "PortfolioBackEnd\PortfolioBackEnd.csproj", "{829BCAD7-8332-4E2D-8739-01420853260D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjects", "TestProjects", "{BC061830-C8BB-4ECD-96D6-A7F96E22C7A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioBackEndTest", "PortfolioBackEndTest\PortfolioBackEndTest.csproj", "{71654058-3745-40B1-928C-64DDC96952DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{829BCAD7-8332-4E2D-8739-01420853260D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{829BCAD7-8332-4E2D-8739-01420853260D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{829BCAD7-8332-4E2D-8739-01420853260D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71654058-3745-40B1-928C-64DDC96952DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71654058-3745-40B1-928C-64DDC96952DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71654058-3745-40B1-928C-64DDC96952DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71654058-3745-40B1-928C-64DDC96952DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{71654058-3745-40B1-928C-64DDC96952DC} = {BC061830-C8BB-4ECD-96D6-A7F96E22C7A8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {72377014-335C-4E29-BD66-6B143E1D3739}
