@@ -1,12 +1,13 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace PortfolioBackEnd.ExtensionMethods
 {
     public static class ServiceCollectionExtensions
     {
-        public static IContainer AddIoC(this IServiceCollection serviceCollection)
+        public static IServiceProvider AddIoC(this IServiceCollection serviceCollection, out IContainer appContainer)
         {
             //Create your Autofac Container
             ContainerBuilder containerBuilder = new ContainerBuilder();
@@ -15,7 +16,9 @@ namespace PortfolioBackEnd.ExtensionMethods
 
             //Put the framework services into Autofac
             containerBuilder.Populate(serviceCollection);
-            return containerBuilder.Build();
+            appContainer = containerBuilder.Build();
+
+            return new AutofacServiceProvider(appContainer);
         }
 
     }
