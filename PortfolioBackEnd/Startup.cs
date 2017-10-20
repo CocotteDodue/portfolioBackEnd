@@ -20,7 +20,7 @@ namespace PortfolioBackEnd
 
         public IConfiguration Configuration { get; }
 
-        public IContainer AppContainer { get; set; }
+        public IContainer AppContainer;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider /*void*/ ConfigureServices(IServiceCollection services)
@@ -42,8 +42,7 @@ namespace PortfolioBackEnd
                 });
             });
             
-            AppContainer = services.AddIoC();
-            return new AutofacServiceProvider(AppContainer);
+            return services.AddIoC(appContainer: out AppContainer);
         }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
