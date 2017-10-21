@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using PortfolioBackEnd;
 using PortfolioBackEnd.Entities;
+using PortfolioBackEndTest.Dummies;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,27 +18,17 @@ namespace PortfolioBackEndTest
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
-            using (var context = new PortfolioDbContext(contextCreationOption))
+            using (var context = new PortfolioDbContextForDummies(contextCreationOption))
             {
-                var entityToBeAdded1 = new TechnologyVersion
-                {
-                    NickName = "test2",
-                    MajorBuild = "0",
-                    releaseDate = new DateTime(2000, 01, 01)
-                };
-                var entityToBeAdded2 = new TechnologyVersion
-                {
-                    NickName = "test2",
-                    MajorBuild = "0",
-                    releaseDate = new DateTime(2000, 01, 01)
-                };
+                var entityToBeAdded1 = new BaseEntityDummy();
+                var entityToBeAdded2 = new BaseEntityDummy();
 
-                context.TechnologiesVersions.Add(entityToBeAdded1);
-                context.TechnologiesVersions.Add(entityToBeAdded2);
+                context.Add(entityToBeAdded1);
+                context.Add(entityToBeAdded2);
                 IUnitOfWork unitOfWork = new UnitOfWork(context);
 
                 await unitOfWork.CommitAsync();
-                var numberOfEntityInDb = await context.TechnologiesVersions.CountAsync();
+                var numberOfEntityInDb = await context.Set<BaseEntityDummy>().CountAsync();
 
                 Assert.Equal(2, numberOfEntityInDb);
             }
@@ -53,15 +42,10 @@ namespace PortfolioBackEndTest
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
-            using (var context = new PortfolioDbContext(contextCreationOption))
+            using (var context = new PortfolioDbContextForDummies(contextCreationOption))
             {
-                var entityToBeAdded = new TechnologyVersion
-                {
-                        NickName = "test",
-                        MajorBuild = "0",
-                        releaseDate = new DateTime(2000, 01, 01)
-                    };
-                context.TechnologiesVersions.Add(entityToBeAdded);
+                var entityToBeAdded = new BaseEntityDummy();
+                context.Add(entityToBeAdded);
                 IUnitOfWork unitOfWork = new UnitOfWork(context);
 
                 await unitOfWork.CommitAsync();
@@ -78,15 +62,10 @@ namespace PortfolioBackEndTest
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
-            using (var context = new PortfolioDbContext(contextCreationOption))
+            using (var context = new PortfolioDbContextForDummies(contextCreationOption))
             {
-                var modifiedEntity = new TechnologyVersion
-                {
-                    NickName = "test",
-                    MajorBuild = "0",
-                    releaseDate = new DateTime(2000, 01, 01)
-                };
-                context.TechnologiesVersions.Add(modifiedEntity);
+                var modifiedEntity = new BaseEntityDummy();
+                context.Add(modifiedEntity);
                 context.SaveChanges();
                 context.ChangeTracker.Entries().ToList().ForEach(e => e.State = EntityState.Modified);
                 IUnitOfWork unitOfWork = new UnitOfWork(context);
@@ -106,15 +85,10 @@ namespace PortfolioBackEndTest
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
-            using (var context = new PortfolioDbContext(contextCreationOption))
+            using (var context = new PortfolioDbContextForDummies(contextCreationOption))
             {
-                var modifiedEntity = new TechnologyVersion
-                {
-                    NickName = "test",
-                    MajorBuild = "0",
-                    releaseDate = new DateTime(2000, 01, 01)
-                };
-                context.TechnologiesVersions.Add(modifiedEntity);
+                var modifiedEntity = new BaseEntityDummy();
+                context.Add(modifiedEntity);
                 context.SaveChanges();
                 context.ChangeTracker.Entries().ToList().ForEach(e => e.State = EntityState.Deleted);
                 IUnitOfWork unitOfWork = new UnitOfWork(context);
@@ -134,15 +108,10 @@ namespace PortfolioBackEndTest
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
-            using (var context = new PortfolioDbContext(contextCreationOption))
+            using (var context = new PortfolioDbContextForDummies(contextCreationOption))
             {
-                var entityToBeDeleted = new TechnologyVersion
-                {
-                    NickName = "test",
-                    MajorBuild = "0",
-                    releaseDate = new DateTime(2000, 01, 01)
-                };
-                context.TechnologiesVersions.Add(entityToBeDeleted);
+                var entityToBeDeleted = new BaseEntityDummy();
+                context.Add(entityToBeDeleted);
                 context.SaveChanges();
                 context.ChangeTracker.Entries().ToList().ForEach(e => e.State = EntityState.Deleted);
 
@@ -162,15 +131,10 @@ namespace PortfolioBackEndTest
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
-            using (var context = new PortfolioDbContext(contextCreationOption))
+            using (var context = new PortfolioDbContextForDummies(contextCreationOption))
             {
-                var entityToBeDeleted = new TechnologyVersion
-                {
-                    NickName = "test",
-                    MajorBuild = "0",
-                    releaseDate = new DateTime(2000, 01, 01)
-                };
-                context.TechnologiesVersions.Add(entityToBeDeleted);
+                var entityToBeDeleted = new BaseEntityDummy();
+                context.Add(entityToBeDeleted);
                 context.SaveChanges();
                 context.ChangeTracker.Entries().ToList().ForEach(e => e.State = EntityState.Deleted);
 
@@ -178,7 +142,7 @@ namespace PortfolioBackEndTest
 
                 await unitOfWork.CommitAsync();
                 
-                Assert.Contains(entityToBeDeleted, context.TechnologiesVersions);
+                Assert.Contains(entityToBeDeleted, context.Set<BaseEntityDummy>());
             }
         }
     }

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioBackEnd", "Portfol
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjects", "TestProjects", "{BC061830-C8BB-4ECD-96D6-A7F96E22C7A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioBackEndTest", "PortfolioBackEndTest\PortfolioBackEndTest.csproj", "{71654058-3745-40B1-928C-64DDC96952DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioBackEndTest", "PortfolioBackEndTest\PortfolioBackEndTest.csproj", "{71654058-3745-40B1-928C-64DDC96952DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
