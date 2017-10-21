@@ -2,7 +2,7 @@
 
 namespace PortfolioBackEnd.Entities
 {
-    public class TechnologyVersion:BaseEntity
+    public class TechnologyVersion: BaseEntity
     {
         public string NickName { get; set; }
         public string MajorBuild { get; set; }

@@ -17,21 +17,46 @@ namespace PortfolioBackEnd
         }
         public Task<int> CommitAsync()
         {
-            var changeTime = DateTime.Now;
+            var transactionTime = DateTime.Now;
 
+            SetCreationTime(transactionTime);
+            SetLastModificationTime(transactionTime);
+            HandleDeleteEntities();
+
+            // EF Core provide atomic SaveChange (if provider supports transaction)
+            return _dbContext.SaveChangesAsync();
+        }
+
+        private void HandleDeleteEntities()
+        {
+            var entityToBeDeleted = _dbContext.ChangeTracker
+                            .Entries()
+                            .Where(x => x.State == EntityState.Deleted)
+                            .ToList();
+            entityToBeDeleted.ForEach(entry =>
+            {
+                ((BaseEntity)entry.Entity).IsDeleted = true;
+                entry.State = EntityState.Modified;
+            });
+        }
+
+        private void SetLastModificationTime(DateTime transactionTime)
+        {
+            var modifiedEntities = _dbContext.ChangeTracker
+                .Entries()
+                .Where(x => x.State == EntityState.Modified
+                            || x.State == EntityState.Deleted)
+                .ToList();
+            modifiedEntities.ForEach(entry => ((BaseEntity)entry.Entity).LastModificationTime = transactionTime);
+        }
+
+        private void SetCreationTime(DateTime transactionTime)
+        {
             var addedEntities = _dbContext.ChangeTracker
                 .Entries()
                 .Where(x => x.State == EntityState.Added)
                 .ToList();
-
-            addedEntities.ForEach(entry => ((BaseEntity)entry.Entity).CreationTime = changeTime);
-
-            return _dbContext.SaveChangesAsync();
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
+            addedEntities.ForEach(entry => ((BaseEntity)entry.Entity).CreationTime = transactionTime);
         }
     }
 }

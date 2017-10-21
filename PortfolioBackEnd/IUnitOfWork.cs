@@ -8,7 +8,6 @@ namespace PortfolioBackEnd
     public interface IUnitOfWork
     {
         Task<int> CommitAsync();
-        void Dispose();
 
     }
 }

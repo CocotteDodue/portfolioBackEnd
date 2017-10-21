@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using PortfolioBackEnd;
 using PortfolioBackEnd.Entities;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -10,10 +13,10 @@ namespace PortfolioBackEndTest
     public class UnitOfWorkTest
     {
         [Fact]
-        public async Task UnitOfWork_PersistAllAddedEntities_WhenCommitAsync()
+        public async Task UnitOfWork_PersistAllAddedEntities_WhenCommit()
         {
             var contextCreationOption = new DbContextOptionsBuilder<PortfolioDbContext>()
-                .UseInMemoryDatabase(new Guid().ToString())
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
             using (var context = new PortfolioDbContext(contextCreationOption))
@@ -43,11 +46,11 @@ namespace PortfolioBackEndTest
         }
 
         [Fact]
-        public async Task UnitOfWork_AddCreationData_WhenSaveNewEntityAsync()
+        public async Task UnitOfWork_AddCreationDate_WhenSaveNewEntity()
         {
             var timeAtTestStart = DateTime.Now;
             var contextCreationOption = new DbContextOptionsBuilder<PortfolioDbContext>()
-                .UseInMemoryDatabase(new Guid().ToString())
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
             using (var context = new PortfolioDbContext(contextCreationOption))
@@ -64,7 +67,118 @@ namespace PortfolioBackEndTest
                 await unitOfWork.CommitAsync();
 
                 Assert.True(timeAtTestStart < entityToBeAdded.CreationTime);
+            }
+        }
 
+        [Fact]
+        public async Task UnitOfWork_AddLastModificationDate_WhenSaveExistingEntity()
+        {
+            var timeAtTestStart = DateTime.Now;
+            var contextCreationOption = new DbContextOptionsBuilder<PortfolioDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+
+            using (var context = new PortfolioDbContext(contextCreationOption))
+            {
+                var modifiedEntity = new TechnologyVersion
+                {
+                    NickName = "test",
+                    MajorBuild = "0",
+                    releaseDate = new DateTime(2000, 01, 01)
+                };
+                context.TechnologiesVersions.Add(modifiedEntity);
+                context.SaveChanges();
+                context.ChangeTracker.Entries().ToList().ForEach(e => e.State = EntityState.Modified);
+                IUnitOfWork unitOfWork = new UnitOfWork(context);
+
+                await unitOfWork.CommitAsync();
+
+                Assert.True(modifiedEntity.LastModificationTime.HasValue
+                    && timeAtTestStart < modifiedEntity.LastModificationTime.Value);
+            }
+        }
+
+        [Fact]
+        public async Task UnitOfWork_AddLastModificationDate_WhenDeleteExistingEntity()
+        {
+            var timeAtTestStart = DateTime.Now;
+            var contextCreationOption = new DbContextOptionsBuilder<PortfolioDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+
+            using (var context = new PortfolioDbContext(contextCreationOption))
+            {
+                var modifiedEntity = new TechnologyVersion
+                {
+                    NickName = "test",
+                    MajorBuild = "0",
+                    releaseDate = new DateTime(2000, 01, 01)
+                };
+                context.TechnologiesVersions.Add(modifiedEntity);
+                context.SaveChanges();
+                context.ChangeTracker.Entries().ToList().ForEach(e => e.State = EntityState.Deleted);
+                IUnitOfWork unitOfWork = new UnitOfWork(context);
+
+                await unitOfWork.CommitAsync();
+
+                Assert.True(modifiedEntity.LastModificationTime.HasValue
+                    && timeAtTestStart < modifiedEntity.LastModificationTime.Value);
+            }
+        }
+
+        [Fact]
+        public async Task UnitOfWork_MarkEntityAsDeleted_WhenEntityIsDeleted()
+        {
+            var timeAtTestStart = DateTime.Now;
+            var contextCreationOption = new DbContextOptionsBuilder<PortfolioDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+
+            using (var context = new PortfolioDbContext(contextCreationOption))
+            {
+                var entityToBeDeleted = new TechnologyVersion
+                {
+                    NickName = "test",
+                    MajorBuild = "0",
+                    releaseDate = new DateTime(2000, 01, 01)
+                };
+                context.TechnologiesVersions.Add(entityToBeDeleted);
+                context.SaveChanges();
+                context.ChangeTracker.Entries().ToList().ForEach(e => e.State = EntityState.Deleted);
+
+                IUnitOfWork unitOfWork = new UnitOfWork(context);
+
+                await unitOfWork.CommitAsync();
+
+                Assert.True(entityToBeDeleted.IsDeleted);
+            }
+        }
+
+        [Fact]
+        public async Task UnitOfWork_PreserveEntityInDb_WhenEntityIsDeleted()
+        {
+            var timeAtTestStart = DateTime.Now;
+            var contextCreationOption = new DbContextOptionsBuilder<PortfolioDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+
+            using (var context = new PortfolioDbContext(contextCreationOption))
+            {
+                var entityToBeDeleted = new TechnologyVersion
+                {
+                    NickName = "test",
+                    MajorBuild = "0",
+                    releaseDate = new DateTime(2000, 01, 01)
+                };
+                context.TechnologiesVersions.Add(entityToBeDeleted);
+                context.SaveChanges();
+                context.ChangeTracker.Entries().ToList().ForEach(e => e.State = EntityState.Deleted);
+
+                IUnitOfWork unitOfWork = new UnitOfWork(context);
+
+                await unitOfWork.CommitAsync();
+                
+                Assert.Contains(entityToBeDeleted, context.TechnologiesVersions);
             }
         }
     }

@@ -11,9 +11,10 @@ using System;
 namespace PortfolioBackEnd.Migrations
 {
     [DbContext(typeof(PortfolioDbContext))]
-    partial class PortfolioBackEndDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171020091630_LastModifiedNullable")]
+    partial class LastModifiedNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
