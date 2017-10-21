@@ -12,41 +12,41 @@ namespace PortfolioBackEndTest
     public class UnitOfWorkTest
     {
         [Fact]
-        public async Task UnitOfWork_PersistAllAddedEntities_WhenCommit()
+        public async Task UnitOfWork_PersistsAllAddedEntities_WhenCommit()
         {
-            var contextCreationOption = new DbContextOptionsBuilder<PortfolioDbContext>()
+            var contextCreationOption = new DbContextOptionsBuilder<PortfolioOperationsDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
-            using (var context = new PortfolioDbContextForDummies(contextCreationOption))
+            using (var dbContext = new PortfolioFullOpsDbContextForDummies(contextCreationOption))
             {
                 var entityToBeAdded1 = new BaseEntityDummy();
                 var entityToBeAdded2 = new BaseEntityDummy();
 
-                context.Add(entityToBeAdded1);
-                context.Add(entityToBeAdded2);
-                IUnitOfWork unitOfWork = new UnitOfWork(context);
+                dbContext.Add(entityToBeAdded1);
+                dbContext.Add(entityToBeAdded2);
+                IUnitOfWork unitOfWork = new UnitOfWork(dbContext);
 
                 await unitOfWork.CommitAsync();
-                var numberOfEntityInDb = await context.Set<BaseEntityDummy>().CountAsync();
+                var numberOfEntityInDb = await dbContext.Set<BaseEntityDummy>().CountAsync();
 
                 Assert.Equal(2, numberOfEntityInDb);
             }
         }
 
         [Fact]
-        public async Task UnitOfWork_AddCreationDate_WhenSaveNewEntity()
+        public async Task UnitOfWork_AddsCreationDate_WhenSaveNewEntity()
         {
             var timeAtTestStart = DateTime.Now;
-            var contextCreationOption = new DbContextOptionsBuilder<PortfolioDbContext>()
+            var contextCreationOption = new DbContextOptionsBuilder<PortfolioOperationsDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
-            using (var context = new PortfolioDbContextForDummies(contextCreationOption))
+            using (var dbContext = new PortfolioFullOpsDbContextForDummies(contextCreationOption))
             {
                 var entityToBeAdded = new BaseEntityDummy();
-                context.Add(entityToBeAdded);
-                IUnitOfWork unitOfWork = new UnitOfWork(context);
+                dbContext.Add(entityToBeAdded);
+                IUnitOfWork unitOfWork = new UnitOfWork(dbContext);
 
                 await unitOfWork.CommitAsync();
 
@@ -55,20 +55,20 @@ namespace PortfolioBackEndTest
         }
 
         [Fact]
-        public async Task UnitOfWork_AddLastModificationDate_WhenSaveExistingEntity()
+        public async Task UnitOfWork_AddsLastModificationDate_WhenSaveExistingEntity()
         {
             var timeAtTestStart = DateTime.Now;
-            var contextCreationOption = new DbContextOptionsBuilder<PortfolioDbContext>()
+            var contextCreationOption = new DbContextOptionsBuilder<PortfolioOperationsDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
-            using (var context = new PortfolioDbContextForDummies(contextCreationOption))
+            using (var dbContext = new PortfolioFullOpsDbContextForDummies(contextCreationOption))
             {
                 var modifiedEntity = new BaseEntityDummy();
-                context.Add(modifiedEntity);
-                context.SaveChanges();
-                context.ChangeTracker.Entries().ToList().ForEach(e => e.State = EntityState.Modified);
-                IUnitOfWork unitOfWork = new UnitOfWork(context);
+                dbContext.Add(modifiedEntity);
+                dbContext.SaveChanges();
+                dbContext.ChangeTracker.Entries().ToList().ForEach(e => e.State = EntityState.Modified);
+                IUnitOfWork unitOfWork = new UnitOfWork(dbContext);
 
                 await unitOfWork.CommitAsync();
 
@@ -78,20 +78,20 @@ namespace PortfolioBackEndTest
         }
 
         [Fact]
-        public async Task UnitOfWork_AddLastModificationDate_WhenDeleteExistingEntity()
+        public async Task UnitOfWork_AddsLastModificationDate_WhenDeleteExistingEntity()
         {
             var timeAtTestStart = DateTime.Now;
-            var contextCreationOption = new DbContextOptionsBuilder<PortfolioDbContext>()
+            var contextCreationOption = new DbContextOptionsBuilder<PortfolioOperationsDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
-            using (var context = new PortfolioDbContextForDummies(contextCreationOption))
+            using (var dbContext = new PortfolioFullOpsDbContextForDummies(contextCreationOption))
             {
                 var modifiedEntity = new BaseEntityDummy();
-                context.Add(modifiedEntity);
-                context.SaveChanges();
-                context.ChangeTracker.Entries().ToList().ForEach(e => e.State = EntityState.Deleted);
-                IUnitOfWork unitOfWork = new UnitOfWork(context);
+                dbContext.Add(modifiedEntity);
+                dbContext.SaveChanges();
+                dbContext.ChangeTracker.Entries().ToList().ForEach(e => e.State = EntityState.Deleted);
+                IUnitOfWork unitOfWork = new UnitOfWork(dbContext);
 
                 await unitOfWork.CommitAsync();
 
@@ -101,21 +101,21 @@ namespace PortfolioBackEndTest
         }
 
         [Fact]
-        public async Task UnitOfWork_MarkEntityAsDeleted_WhenEntityIsDeleted()
+        public async Task UnitOfWork_MarksEntityAsDeleted_WhenEntityIsDeleted()
         {
             var timeAtTestStart = DateTime.Now;
-            var contextCreationOption = new DbContextOptionsBuilder<PortfolioDbContext>()
+            var contextCreationOption = new DbContextOptionsBuilder<PortfolioOperationsDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
-            using (var context = new PortfolioDbContextForDummies(contextCreationOption))
+            using (var dbContext = new PortfolioFullOpsDbContextForDummies(contextCreationOption))
             {
                 var entityToBeDeleted = new BaseEntityDummy();
-                context.Add(entityToBeDeleted);
-                context.SaveChanges();
-                context.ChangeTracker.Entries().ToList().ForEach(e => e.State = EntityState.Deleted);
+                dbContext.Add(entityToBeDeleted);
+                dbContext.SaveChanges();
+                dbContext.ChangeTracker.Entries().ToList().ForEach(e => e.State = EntityState.Deleted);
 
-                IUnitOfWork unitOfWork = new UnitOfWork(context);
+                IUnitOfWork unitOfWork = new UnitOfWork(dbContext);
 
                 await unitOfWork.CommitAsync();
 
@@ -124,25 +124,25 @@ namespace PortfolioBackEndTest
         }
 
         [Fact]
-        public async Task UnitOfWork_PreserveEntityInDb_WhenEntityIsDeleted()
+        public async Task UnitOfWork_PreservesEntityInDb_WhenEntityIsDeleted()
         {
             var timeAtTestStart = DateTime.Now;
-            var contextCreationOption = new DbContextOptionsBuilder<PortfolioDbContext>()
+            var contextCreationOption = new DbContextOptionsBuilder<PortfolioOperationsDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
-            using (var context = new PortfolioDbContextForDummies(contextCreationOption))
+            using (var dbContext = new PortfolioFullOpsDbContextForDummies(contextCreationOption))
             {
                 var entityToBeDeleted = new BaseEntityDummy();
-                context.Add(entityToBeDeleted);
-                context.SaveChanges();
-                context.ChangeTracker.Entries().ToList().ForEach(e => e.State = EntityState.Deleted);
+                dbContext.Add(entityToBeDeleted);
+                dbContext.SaveChanges();
+                dbContext.ChangeTracker.Entries().ToList().ForEach(e => e.State = EntityState.Deleted);
 
-                IUnitOfWork unitOfWork = new UnitOfWork(context);
+                IUnitOfWork unitOfWork = new UnitOfWork(dbContext);
 
                 await unitOfWork.CommitAsync();
                 
-                Assert.Contains(entityToBeDeleted, context.Set<BaseEntityDummy>());
+                Assert.Contains(entityToBeDeleted, dbContext.Set<BaseEntityDummy>());
             }
         }
     }

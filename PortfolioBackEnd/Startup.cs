@@ -63,7 +63,10 @@ namespace PortfolioBackEnd
         private void ConfigureDatabaseService(IServiceCollection services)
         {
             var connection = Configuration.GetConnectionString("PortfolioBackEndDb");
-            services.AddDbContext<PortfolioDbContext>(options => options.UseSqlServer(connection));
+            services
+                .AddEntityFrameworkSqlServer()
+                .AddDbContext<PortfolioOperationsDbContext>(options => options.UseSqlServer(connection))
+                .AddDbContext<PortfolioReadOnlyDbContext>(options => options.UseSqlServer(connection));
         }
 
         private void ConfigureSwagger(IApplicationBuilder app, IHostingEnvironment env)

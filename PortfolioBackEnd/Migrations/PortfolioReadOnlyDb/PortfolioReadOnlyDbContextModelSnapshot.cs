@@ -8,13 +8,12 @@ using Microsoft.EntityFrameworkCore.Storage.Internal;
 using PortfolioBackEnd;
 using System;
 
-namespace PortfolioBackEnd.Migrations
+namespace PortfolioBackEnd.Migrations.PortfolioReadOnlyDb
 {
-    [DbContext(typeof(PortfolioDbContext))]
-    [Migration("20171020091630_LastModifiedNullable")]
-    partial class LastModifiedNullable
+    [DbContext(typeof(PortfolioReadOnlyDbContext))]
+    partial class PortfolioReadOnlyDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,13 +27,15 @@ namespace PortfolioBackEnd.Migrations
 
                     b.Property<DateTime>("CreationTime");
 
+                    b.Property<bool>("IsDeleted");
+
                     b.Property<DateTime?>("LastModificationTime");
 
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Technologies");
+                    b.ToTable("Technology");
                 });
 
             modelBuilder.Entity("PortfolioBackEnd.Entities.TechnologyVersion", b =>
@@ -43,6 +44,8 @@ namespace PortfolioBackEnd.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreationTime");
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<DateTime?>("LastModificationTime");
 
@@ -58,7 +61,7 @@ namespace PortfolioBackEnd.Migrations
 
                     b.HasIndex("TechnologyId");
 
-                    b.ToTable("TechnologiesVersions");
+                    b.ToTable("TechnologyVersion");
                 });
 
             modelBuilder.Entity("PortfolioBackEnd.Entities.TechnologyVersion", b =>

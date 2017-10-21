@@ -9,9 +9,9 @@ namespace PortfolioBackEnd
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private PortfolioDbContext _dbContext;
+        private PortfolioOperationsDbContext _dbContext;
 
-        public UnitOfWork(PortfolioDbContext dbContext)
+        public UnitOfWork(PortfolioOperationsDbContext dbContext)
         {
             _dbContext = dbContext;
         }

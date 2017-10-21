@@ -2,7 +2,7 @@
 
 namespace PortfolioBackEndTest.Dummies
 {
-    class BaseEntityDummy: BaseEntity
+    internal class BaseEntityDummy: BaseEntity
     {
     }
 }

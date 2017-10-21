@@ -10,9 +10,9 @@ using System;
 
 namespace PortfolioBackEnd.Migrations
 {
-    [DbContext(typeof(PortfolioDbContext))]
-    [Migration("20171017041501_InitialCreate")]
-    partial class InitialCreate
+    [DbContext(typeof(PortfolioOperationsDbContext))]
+    [Migration("20171021104823_IntroduceFullOperationsContext")]
+    partial class IntroduceFullOperationsContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,7 +28,9 @@ namespace PortfolioBackEnd.Migrations
 
                     b.Property<DateTime>("CreationTime");
 
-                    b.Property<DateTime>("LastModificationTime");
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime");
 
                     b.Property<string>("Name");
 
@@ -44,7 +46,9 @@ namespace PortfolioBackEnd.Migrations
 
                     b.Property<DateTime>("CreationTime");
 
-                    b.Property<DateTime>("LastModificationTime");
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime");
 
                     b.Property<string>("MajorBuild");
 
