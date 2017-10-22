@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Moq;
 using PortfolioBackEnd;
-using PortfolioBackEnd.Entities;
 using PortfolioBackEndTest.Dummies;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 

@@ -1,14 +1,6 @@
-﻿using PortfolioBackEnd.Entities;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace PortfolioBackEnd.Queries
+﻿namespace PortfolioBackEnd.Queries
 {
-    public interface IQuery<T> where T : BaseEntity
+    public interface IQuery<TResult>
     {
-        IQueryable<T> GetQuery();
-        IEnumerable<T> RunQuery();
-        Task<IEnumerable<T>> RunQueryAsync();
     }
 }
