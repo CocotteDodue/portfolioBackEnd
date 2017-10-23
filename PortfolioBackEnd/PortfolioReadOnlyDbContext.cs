@@ -9,8 +9,9 @@ namespace PortfolioBackEnd
     {
         public PortfolioReadOnlyDbContext(DbContextOptions<PortfolioReadOnlyDbContext> options) 
             : base(options)
-        { }
-
+        {
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        }
 
         public override int SaveChanges()
         {
@@ -19,7 +20,7 @@ namespace PortfolioBackEnd
         
         public IQueryable<TEntity> QuerySet<TEntity>() where TEntity : class
         {
-            return base.Set<TEntity>().AsNoTracking();
+            return base.Set<TEntity>();
         }
 
         public override DbSet<TEntity> Set<TEntity>()

@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using PortfolioBackEnd.ExtensionMethods;
 
 namespace PortfolioBackEnd

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using PortfolioBackEnd.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +14,7 @@ namespace PortfolioBackEnd
 
         public IQueryable<TEntity> ReadOnlySet<TEntity>() where TEntity : BaseEntity
         {
-            return _dbContext.QuerySet<TEntity>();
+            return _dbContext.QuerySet<TEntity>().AsNoTracking();
         }
     }
 }

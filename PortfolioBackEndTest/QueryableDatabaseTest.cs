@@ -20,9 +20,11 @@ namespace PortfolioBackEndTest
             {
                 IReadOnlyDatabase queryableDb = new ReadOnlyDatabase(dbContext);
 
-                var result = queryableDb.ReadOnlySet<BaseEntityDummy>();
+                var set = queryableDb.ReadOnlySet<BaseEntityDummy>();
 
-                Assert.IsAssignableFrom<IQueryable>(result);
+                var setIsQueryable = set is IQueryable;
+                var setIsDbset = set is DbSet<BaseEntityDummy>;
+                Assert.True(setIsQueryable && !setIsDbset);
             }
         }
     }

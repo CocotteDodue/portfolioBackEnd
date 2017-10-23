@@ -7,8 +7,8 @@ namespace PortfolioBackEndTest.Dummies
     {
         internal PortfolioReadOnlyDbContextForDummies(DbContextOptions<PortfolioReadOnlyDbContext> options) 
             : base(options)
-        {
-        }
+        { }
+
         public DbSet<BaseEntityDummy> DummyBase { get; set; }
     }
 }
