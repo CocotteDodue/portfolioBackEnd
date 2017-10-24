@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using PortfolioBackEnd;
-using PortfolioBackEnd.Entities;
 using PortfolioBackEndTest.Dummies;
 using System;
 using System.Linq;

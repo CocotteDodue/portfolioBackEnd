@@ -2,14 +2,12 @@
 using PortfolioBackEnd;
 using PortfolioBackEndTest.Dummies;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace PortfolioBackEndTest
 {
-    public class PortfolioDbContextsTest
+    public class PortfolioReadOnlyDbContextTest
     {
         [Fact]
         public void ReadOnlyContext_ThrowInvalidOperationException_WhenSavingChanges()

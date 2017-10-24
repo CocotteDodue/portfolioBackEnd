@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
+using PortfolioBackEnd.Queries;
 using System;
 
 namespace PortfolioBackEnd.ExtensionMethods
@@ -12,6 +13,15 @@ namespace PortfolioBackEnd.ExtensionMethods
             //Create your Autofac Container
             ContainerBuilder containerBuilder = new ContainerBuilder();
             //Register your own services within Autofac
+
+            //register bus
+            containerBuilder.RegisterType<ReadOnlyDatabase>().As<IReadOnlyDatabase>();
+
+            //Queryhandler
+            containerBuilder.RegisterType<GetAllTechnologiesQueryHandler>().As<IGetAllTechnologiesQueryHandler>();
+
+
+            containerBuilder.RegisterType<QueryBus>().As<IQueryBus>();
 
 
             //Put the framework services into Autofac
