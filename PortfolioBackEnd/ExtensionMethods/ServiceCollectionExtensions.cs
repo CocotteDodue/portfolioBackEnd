@@ -23,14 +23,16 @@ namespace PortfolioBackEnd.ExtensionMethods
             containerBuilder.RegisterType<GetAllTechnologiesQueryHandler>().As<IGetAllTechnologiesQueryHandler>();
 
 
-            //Queryhandler
+            //CommandHandlerhandler
             containerBuilder.RegisterType<AddTechnologyVersionCommandHandler>().As<IAddTechnologyVersionCommandHandler>();
 
             // register bus
             containerBuilder.RegisterType<QueryBus>().As<IQueryBus>();
+            containerBuilder.RegisterType<CommandBus>().As<ICommandBus>();
 
             // register delegate for bus
-            containerBuilder.Register(RegisterHandlersFactoryDelegate());
+            containerBuilder.Register(RegisterQueryHandlersFactoryDelegate());
+            containerBuilder.Register(RegisterCommandHandlersFactoryDelegate());
 
 
             //Put the framework services into Autofac
@@ -44,12 +46,11 @@ namespace PortfolioBackEnd.ExtensionMethods
         /// access scoped container at runtime via resolution of IComponentContext, resolving queryFactoryDelegate
         /// </summary>
         /// <returns>delegate resolving QueryHandler</returns>
-        private static Func<IComponentContext, Func<Type, IQueryHandler>> RegisterHandlersFactoryDelegate()
+        private static Func<IComponentContext, Func<Type, IQueryHandler>> RegisterQueryHandlersFactoryDelegate()
         {
             return ctx =>
             {
                 var container = ctx.Resolve<IComponentContext>();
-
                 return ResolveQueryHandlerAtRunTime(container);
             };
         }
@@ -64,10 +65,35 @@ namespace PortfolioBackEnd.ExtensionMethods
             return queryType =>
             {
                 var handlerType = typeof(IQueryHandler<,>).MakeGenericType(queryType);
-
                 return (IQueryHandler)container.Resolve(handlerType);
             };
         }
 
+        /// <summary>
+        /// access scoped container at runtime via resolution of IComponentContext, resolving commandFactoryDelegate
+        /// </summary>
+        /// <returns>delegate resolving CommandHandler</returns>
+        private static Func<IComponentContext, Func<Type, ICommandHandler>> RegisterCommandHandlersFactoryDelegate()
+        {
+            return ctx =>
+            {
+                var container = ctx.Resolve<IComponentContext>();
+                return ResolveCommandHandlerAtRunTime(container);
+            };
+        }
+
+        /// <summary>
+        /// provides a delegate resolving CommandHandler at runtime based on the CommandType expected
+        /// </summary>
+        /// <param name="container">IoCContainer as IComponentContext used to resolve the query handler at runtime</param>
+        /// <returns>delegate resolving CommandHandler</returns>
+        private static Func<Type, ICommandHandler> ResolveCommandHandlerAtRunTime(IComponentContext container)
+        {
+            return commandType =>
+            {
+                var handlerType = typeof(ICommandHandler<>).MakeGenericType(commandType);
+                return (ICommandHandler)container.Resolve(handlerType);
+            };
+        }
     }
 }

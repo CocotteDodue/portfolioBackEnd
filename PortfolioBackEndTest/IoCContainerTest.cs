@@ -102,23 +102,23 @@ namespace PortfolioBackEndTest
             services.AddIoC(out appContainer);
             AddTechnologyVersionCommand addTechCommand = new AddTechnologyVersionCommand();
 
-            var handlerFactory = appContainer.Resolve<Func<AddTechnologyVersionCommand, IAddTechnologyVersionCommand>>();
+            var handlerFactory = appContainer.Resolve<Func<IAddTechnologyVersionCommand, IAddTechnologyVersionCommandHandler>>();
             var handler = handlerFactory(addTechCommand);
 
             Assert.True(ObjectExistAndIsOfExpectedType(handler, typeof(AddTechnologyVersionCommandHandler)));
         }
 
-        //[Fact]
-        //public void IoCContainer_CanResolveQueryBus_AfterInitialization()
-        //{
-        //    IServiceCollection services = InitializeServices();
-        //    IContainer appContainer;
-        //    services.AddIoC(out appContainer);
+        [Fact]
+        public void IoCContainer_CanResolveCommandBus_AfterInitialization()
+        {
+            IServiceCollection services = InitializeServices();
+            IContainer appContainer;
+            services.AddIoC(out appContainer);
 
-        //    var queryBus = appContainer.Resolve<IQueryBus>();
+            var queryBus = appContainer.Resolve<ICommandBus>();
 
-        //    Assert.True(ObjectExistAndIsOfExpectedType(queryBus, typeof(QueryBus)));
-        //}
+            Assert.True(ObjectExistAndIsOfExpectedType(queryBus, typeof(CommandBus)));
+        }
 
         private IServiceCollection InitializeServices()
         {
