@@ -6,6 +6,7 @@ using PortfolioBackEnd.Queries;
 using Xunit;
 using PortfolioBackEnd;
 using Microsoft.EntityFrameworkCore;
+using PortfolioBackEnd.Commands;
 
 namespace PortfolioBackEndTest
 {
@@ -45,9 +46,9 @@ namespace PortfolioBackEndTest
             IServiceCollection services = InitializeServices();
             IContainer appContainer;
             services.AddIoC(out appContainer);
-            TechnologyQuery tq = new TechnologyQuery();
+            GetAllTechnologyiesQuery tq = new GetAllTechnologyiesQuery();
 
-            var handlerFactory = appContainer.Resolve<Func<ITechnologyQuery, IGetAllTechnologiesQueryHandler>>();
+            var handlerFactory = appContainer.Resolve<Func<IGetAllTechnologyiesQuery, IGetAllTechnologiesQueryHandler>>();
             var handler = handlerFactory(tq);
 
             Assert.True(ObjectExistAndIsOfExpectedType(handler, typeof(GetAllTechnologiesQueryHandler)));
@@ -64,6 +65,60 @@ namespace PortfolioBackEndTest
             
             Assert.True(ObjectExistAndIsOfExpectedType(queryBus, typeof(QueryBus)));
         }
+
+        [Fact]
+        public void IoCContainer_CanResolveOperationDataBase_AfterInitialization()
+        {
+            IServiceCollection services = InitializeServices();
+            IContainer appContainer;
+            services.AddIoC(out appContainer);
+
+            var operationDatabase = appContainer.Resolve<IOperationsDatabase>();
+
+            Assert.True(ObjectExistAndIsOfExpectedType(operationDatabase, typeof(OperationDatabase)));
+        }
+
+        [Fact]
+        //TODO: Transform to check ALL query handler are resolved properly => 
+        // 1 -> get all queryhandler via reflection
+        // 2 -> foreach loop: iterate on all of them and combine result
+        // 3 -> assert result
+        public void IoCContainer_CanResolveCommandHandler_AfterInitialization()
+        {
+            IServiceCollection services = InitializeServices();
+            IContainer appContainer;
+            services.AddIoC(out appContainer);
+
+            var handler = appContainer.Resolve<IAddTechnologyVersionCommandHandler>();
+
+            Assert.True(ObjectExistAndIsOfExpectedType(handler, typeof(AddTechnologyVersionCommandHandler)));
+        }
+
+        [Fact]
+        public void IoCContainer_CanResolveCommandHandlerFactory_AfterInitialization()
+        {
+            IServiceCollection services = InitializeServices();
+            IContainer appContainer;
+            services.AddIoC(out appContainer);
+            AddTechnologyVersionCommand addTechCommand = new AddTechnologyVersionCommand();
+
+            var handlerFactory = appContainer.Resolve<Func<AddTechnologyVersionCommand, IAddTechnologyVersionCommand>>();
+            var handler = handlerFactory(addTechCommand);
+
+            Assert.True(ObjectExistAndIsOfExpectedType(handler, typeof(AddTechnologyVersionCommandHandler)));
+        }
+
+        //[Fact]
+        //public void IoCContainer_CanResolveQueryBus_AfterInitialization()
+        //{
+        //    IServiceCollection services = InitializeServices();
+        //    IContainer appContainer;
+        //    services.AddIoC(out appContainer);
+
+        //    var queryBus = appContainer.Resolve<IQueryBus>();
+
+        //    Assert.True(ObjectExistAndIsOfExpectedType(queryBus, typeof(QueryBus)));
+        //}
 
         private IServiceCollection InitializeServices()
         {

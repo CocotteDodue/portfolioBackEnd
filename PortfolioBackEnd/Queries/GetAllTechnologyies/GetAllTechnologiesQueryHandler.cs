@@ -12,12 +12,12 @@ namespace PortfolioBackEnd.Queries
             throw new NotImplementedException();
         }
 
-        public Technology HandleQuery(ITechnologyQuery query)
+        public Technology HandleQuery(IGetAllTechnologyiesQuery query)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Technology> HandleQueryAsync(ITechnologyQuery query)
+        public Task<Technology> HandleQueryAsync(IGetAllTechnologyiesQuery query)
         {
             throw new NotImplementedException();
         }

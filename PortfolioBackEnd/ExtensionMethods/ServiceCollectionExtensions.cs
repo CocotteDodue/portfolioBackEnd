@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
+using PortfolioBackEnd.Commands;
 using PortfolioBackEnd.Queries;
 using System;
 
@@ -16,9 +17,14 @@ namespace PortfolioBackEnd.ExtensionMethods
 
             //register db abstraction
             containerBuilder.RegisterType<ReadOnlyDatabase>().As<IReadOnlyDatabase>();
+            containerBuilder.RegisterType<OperationDatabase>().As<IOperationsDatabase>();
 
             //Queryhandler
             containerBuilder.RegisterType<GetAllTechnologiesQueryHandler>().As<IGetAllTechnologiesQueryHandler>();
+
+
+            //Queryhandler
+            containerBuilder.RegisterType<AddTechnologyVersionCommandHandler>().As<IAddTechnologyVersionCommandHandler>();
 
             // register bus
             containerBuilder.RegisterType<QueryBus>().As<IQueryBus>();

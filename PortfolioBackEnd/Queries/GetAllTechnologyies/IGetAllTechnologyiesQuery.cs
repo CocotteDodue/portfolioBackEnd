@@ -2,7 +2,7 @@
 
 namespace PortfolioBackEnd.Queries
 {
-    public interface ITechnologyQuery: IQuery<Technology>
+    public interface IGetAllTechnologyiesQuery: IQuery<Technology>
     {
     }
 }
