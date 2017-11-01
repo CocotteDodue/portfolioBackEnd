@@ -14,14 +14,17 @@ namespace PortfolioBackEnd.ExtensionMethods
             ContainerBuilder containerBuilder = new ContainerBuilder();
             //Register your own services within Autofac
 
-            //register bus
+            //register db abstraction
             containerBuilder.RegisterType<ReadOnlyDatabase>().As<IReadOnlyDatabase>();
 
             //Queryhandler
             containerBuilder.RegisterType<GetAllTechnologiesQueryHandler>().As<IGetAllTechnologiesQueryHandler>();
 
-
+            // register bus
             containerBuilder.RegisterType<QueryBus>().As<IQueryBus>();
+
+            // register delegate for bus
+            containerBuilder.Register(RegisterHandlersFactoryDelegate());
 
 
             //Put the framework services into Autofac
@@ -29,6 +32,35 @@ namespace PortfolioBackEnd.ExtensionMethods
             appContainer = containerBuilder.Build();
 
             return new AutofacServiceProvider(appContainer);
+        }
+
+        /// <summary>
+        /// access scoped container at runtime via resolution of IComponentContext, resolving queryFactoryDelegate
+        /// </summary>
+        /// <returns>delegate resolving QueryHandler</returns>
+        private static Func<IComponentContext, Func<Type, IQueryHandler>> RegisterHandlersFactoryDelegate()
+        {
+            return ctx =>
+            {
+                var container = ctx.Resolve<IComponentContext>();
+
+                return ResolveQueryHandlerAtRunTime(container);
+            };
+        }
+
+        /// <summary>
+        /// provides a delegate resolving QueryHandler at runtime based on the QueryType and Result type expected
+        /// </summary>
+        /// <param name="container">IoCContainer as IComponentContext used to resolve the query handler at runtime</param>
+        /// <returns>delegate resolving QueryHandler</returns>
+        private static Func<Type, IQueryHandler> ResolveQueryHandlerAtRunTime(IComponentContext container)
+        {
+            return queryType =>
+            {
+                var handlerType = typeof(IQueryHandler<,>).MakeGenericType(queryType);
+
+                return (IQueryHandler)container.Resolve(handlerType);
+            };
         }
 
     }

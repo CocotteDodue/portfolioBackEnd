@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PortfolioBackEndTest
 {
-    public class IoCConfigurationTest
+    public class IoCContainerTest
     {
         [Fact]
         public void IoCContainer_CanResolveReadOnlyDataBase_AfterInitialization()
@@ -38,8 +38,20 @@ namespace PortfolioBackEndTest
 
             Assert.True(ObjectExistAndIsOfExpectedType(handler, typeof(GetAllTechnologiesQueryHandler)));
         }
+        
+        [Fact]
+        public void IoCContainer_CanResolveQueryHandlerFactory_AfterInitialization()
+        {
+            IServiceCollection services = InitializeServices();
+            IContainer appContainer;
+            services.AddIoC(out appContainer);
+            TechnologyQuery tq = new TechnologyQuery();
 
-        // TODO: attempt to test handlerFactory resolution
+            var handlerFactory = appContainer.Resolve<Func<ITechnologyQuery, IGetAllTechnologiesQueryHandler>>();
+            var handler = handlerFactory(tq);
+
+            Assert.True(ObjectExistAndIsOfExpectedType(handler, typeof(GetAllTechnologiesQueryHandler)));
+        }
 
         [Fact]
         public void IoCContainer_CanResolveQueryBus_AfterInitialization()
@@ -52,18 +64,6 @@ namespace PortfolioBackEndTest
             
             Assert.True(ObjectExistAndIsOfExpectedType(queryBus, typeof(QueryBus)));
         }
-
-        //[Fact]
-        //public void IoC_ContainsQueryBus_AfterInitialization ()
-        //{
-        //    IServiceCollection sc = new ServiceCollection();
-        //    IContainer appContainer;
-        //    sc.AddIoC(out appContainer);
-
-        //    var queryBus = appContainer.Resolve<IQueryBus>();
-
-        //    Assert.True(ObjectExistAndIsOfExpectedType(queryBus, typeof(QueryBus)));
-        //}
 
         private IServiceCollection InitializeServices()
         {
