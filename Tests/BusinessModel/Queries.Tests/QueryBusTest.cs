@@ -1,10 +1,10 @@
 ﻿using Moq;
-using Portfolio.BusinessModel.Queries;
-using PortfolioBackEndTest.Dummies;
+using Portfolio.BusinessModel.Queries.Dummies;
+using Portfolio.Tests.Dummies;
 using System;
 using Xunit;
 
-namespace PortfolioBackEndTest
+namespace Portfolio.BusinessModel.Queries
 {
     public class QueryBusTest
     {

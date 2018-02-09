@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using Portfolio.DAL.Commands;
-using PortfolioBackEndTest.Dummies;
+using Portfolio.DAL.Commands.Dummies;
+using Portfolio.Tests.Dummies;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace PortfolioBackEndTest
+namespace Portfolio.DAL.Commands
 {
     public class UnitOfWorkTest
     {

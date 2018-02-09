@@ -9,7 +9,7 @@ using Portfolio.DAL.Queries;
 using System;
 using Xunit;
 
-namespace PortfolioBackEndTest
+namespace Portfolio.Api.DependencyInjection
 {
     public class IoCContainerTest
     {

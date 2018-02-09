@@ -1,6 +1,6 @@
 ﻿using Portfolio.Contracts.Entities;
 
-namespace PortfolioBackEndTest.Dummies
+namespace Portfolio.Tests.Dummies
 {
     public class BaseEntityDummy: BaseEntity
     { }

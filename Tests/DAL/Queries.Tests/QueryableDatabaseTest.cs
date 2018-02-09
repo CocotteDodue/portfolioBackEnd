@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Portfolio.DAL.Queries;
-using PortfolioBackEndTest.Dummies;
+using Portfolio.DAL.Queries.Dummies;
+using Portfolio.Tests.Dummies;
 using System;
 using System.Linq;
 using Xunit;
 
-namespace PortfolioBackEndTest
+namespace Portfolio.DAL.Queries
 {
     public class QueryableDatabaseTest
     {

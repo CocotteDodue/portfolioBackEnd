@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>Portfolio.DAL.Commands.Tests</AssemblyName>
+    <RootNamespace>Portfolio.DAL.Commands</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.0.1" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Portfolio.Contracts\Entities\Portfolio.Contracts.Entities.csproj" />
+    <ProjectReference Include="..\..\..\Portfolio.DAL\Commands\Portfolio.DAL.Commands.csproj" />
+    <ProjectReference Include="..\..\Portfolio.Tests.Dummies\Portfolio.Tests.Dummies.csproj" />
+  </ItemGroup>
+
+</Project>

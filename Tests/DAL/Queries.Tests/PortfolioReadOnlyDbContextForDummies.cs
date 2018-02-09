@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Portfolio.DAL.Queries;
+using Portfolio.Tests.Dummies;
 
-namespace PortfolioBackEndTest.Dummies
+namespace Portfolio.DAL.Queries.Dummies
 {
     internal class PortfolioReadOnlyDbContextForDummies : PortfolioReadOnlyDbContext
     {

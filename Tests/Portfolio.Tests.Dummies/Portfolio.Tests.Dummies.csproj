@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>Portfolio.Tests.Dummies</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Portfolio.Contracts\Entities\Portfolio.Contracts.Entities.csproj" />
+  </ItemGroup>
+
+</Project>

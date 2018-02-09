@@ -1,10 +1,9 @@
 ﻿using Moq;
-using Portfolio.BusinessModel.Commands;
-using PortfolioBackEndTest.Dummies;
+using Portfolio.BusinessModel.Commands.Dummies;
 using System;
 using Xunit;
 
-namespace PortfolioBackEndTest
+namespace Portfolio.BusinessModel.Commands
 {
     public class CommandBusTest
     {

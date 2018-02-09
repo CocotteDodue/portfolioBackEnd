@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Portfolio.DAL.Commands;
+using Portfolio.Tests.Dummies;
 
-namespace PortfolioBackEndTest.Dummies
+namespace Portfolio.DAL.Commands.Dummies
 {
     internal class PortfolioFullOpsDbContextForDummies : PortfolioOperationsDbContext
     {
