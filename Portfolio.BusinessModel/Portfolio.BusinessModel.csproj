@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <RootNamespace>Portfolio.BusinessModel</RootNamespace>
+    <AssemblyName>Portfolio.BusinessModel</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Portfolio.Contracts\Entities\Portfolio.Contracts.Entities.csproj" />
+  </ItemGroup>
+
+</Project>
