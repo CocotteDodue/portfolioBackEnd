@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
+using System.Collections.Generic;
 
-namespace Portfolio.Api.Migrations
+namespace Portfolio.DAL.Commands.Migrations
 {
-    public partial class IntroduceFullOperationsContext : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,12 +13,12 @@ namespace Portfolio.Api.Migrations
                 name: "Technologies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(maxLength: 56, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,21 +29,21 @@ namespace Portfolio.Api.Migrations
                 name: "TechnologiesVersions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    MajorBuild = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NickName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TechnologyId = table.Column<int>(type: "int", nullable: true),
-                    releaseDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    MajorBuild = table.Column<string>(nullable: false),
+                    NickName = table.Column<string>(nullable: false, defaultValue: ""),
+                    TechnologyId = table.Column<int>(nullable: false),
+                    releaseDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TechnologiesVersions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TechnologiesVersions_Technologies_TechnologyId",
+                        name: "FK_Version_Technology",
                         column: x => x.TechnologyId,
                         principalTable: "Technologies",
                         principalColumn: "Id",

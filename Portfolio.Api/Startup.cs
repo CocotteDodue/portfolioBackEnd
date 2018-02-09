@@ -24,9 +24,9 @@ namespace Portfolio.Api
         public IContainer AppContainer;
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider /*void*/ ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            ConfigureDatabaseService(services);
+            services.ConfigureDatabases(Configuration);
 
             services.AddMvc();
 
@@ -37,7 +37,7 @@ namespace Portfolio.Api
                 {
                     Title = "Portfolio API",
                     Version = "v1",
-                    Description = "ASP.NET Core Web API Application supporting my online Portfolio, along with bloging and my 2cents on techs and how to.",
+                    Description = "ASP.NET Core Web API Application supporting my online Portfolio, along with bloging and my 2 cents on techs and how to.",
                     Contact = new Contact { Name = "Mathilde Ceccaroli", Email = "", Url = "tbd" },
                     License = new License { Name = "Developed and distributed under the MIT License", Url = "https://opensource.org/licenses/MIT" }
                 });
@@ -60,14 +60,6 @@ namespace Portfolio.Api
 
             // properly dispose of the IoC AppContainer when the request is done
             appLifetime.ApplicationStopped.Register(() => AppContainer.Dispose());
-        }
-        private void ConfigureDatabaseService(IServiceCollection services)
-        {
-            var connection = Configuration.GetConnectionString("PortfolioBackEndDb");
-            services
-                .AddEntityFrameworkSqlServer()
-                .AddDbContext<PortfolioOperationsDbContext>(options => options.UseSqlServer(connection))
-                .AddDbContext<PortfolioReadOnlyDbContext>(options => options.UseSqlServer(connection));
         }
 
         private void ConfigureSwagger(IApplicationBuilder app, IHostingEnvironment env)

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Portfolio.Api.DTO
+namespace Portfolio.Contratcs.Dtos
 {
     public class TechnologyDto
     {

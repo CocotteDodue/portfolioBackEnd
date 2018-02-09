@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Portfolio.Api.DTO
+namespace Portfolio.Contratcs.Dtos
 {
     public class TechnologyVersionDto
     {
@@ -8,5 +8,7 @@ namespace Portfolio.Api.DTO
         public string NickName { get; set; }
         public string MajorBuild { get; set; }
         public DateTime releaseDate { get; set; }
+        public TechnologyDto Technology { get; set; }
+        public int? TechnologyId { get; set; }
     }
 }

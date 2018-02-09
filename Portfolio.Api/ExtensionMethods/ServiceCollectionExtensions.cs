@@ -1,5 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Portfolio.BusinessModel.Commands;
 using Portfolio.BusinessModel.Queries;
@@ -96,6 +98,15 @@ namespace Portfolio.Api.ExtensionMethods
                 var handlerType = typeof(ICommandHandler<>).MakeGenericType(commandType);
                 return (ICommandHandler)container.Resolve(handlerType);
             };
+        }
+
+        public static void ConfigureDatabases(this IServiceCollection services, IConfiguration configuration)
+        {
+            var connection = configuration.GetConnectionString("PortfolioBackEndDb");
+            services
+                .AddEntityFrameworkSqlServer()
+                .AddDbContext<PortfolioOperationsDbContext>(options => options.UseSqlServer(connection))
+                .AddDbContext<PortfolioReadOnlyDbContext>(options => options.UseSqlServer(connection));
         }
     }
 }
