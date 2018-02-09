@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Portfolio.DAL.Queries
 {
-    public class ReadOnlyDatabase : IReadOnlyDatabase
+    internal class ReadOnlyDatabase : IReadOnlyDatabase
     {
         private PortfolioReadOnlyDbContext _dbContext;
         public ReadOnlyDatabase(PortfolioReadOnlyDbContext dbContext)

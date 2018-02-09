@@ -3,7 +3,7 @@ using Portfolio.Contracts.Entities;
 
 namespace Portfolio.DAL.Commands
 {
-    public class OperationDatabase : IOperationsDatabase
+    internal class OperationDatabase : IOperationsDatabase
     {
         PortfolioOperationsDbContext _dbContext;
 

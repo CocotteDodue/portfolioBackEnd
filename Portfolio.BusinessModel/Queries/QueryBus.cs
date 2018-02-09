@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Portfolio.BusinessModel.Queries
 {
-    public class QueryBus : IQueryBus
+    internal class QueryBus : IQueryBus
     {
         // Type: QueryType<ResultType>, IQueryHandler: Query handler 
         private Func<Type, IQueryHandler> _handlersFactory;

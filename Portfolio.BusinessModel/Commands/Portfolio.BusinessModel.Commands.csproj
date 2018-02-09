@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Portfolio.Contracts\Entities\Portfolio.Contracts.Entities.csproj" />
     <ProjectReference Include="..\..\Portfolio.DAL\Commands\Portfolio.DAL.Commands.csproj" />
   </ItemGroup>

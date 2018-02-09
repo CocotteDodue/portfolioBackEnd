@@ -1,12 +1,9 @@
 ﻿using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Portfolio.Api.ExtensionMethods;
-using Portfolio.DAL.Commands;
-using Portfolio.DAL.Queries;
+using Portfolio.Api.DiRegistration;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 
@@ -43,7 +40,7 @@ namespace Portfolio.Api
                 });
             });
             
-            return services.AddIoC(appContainer: out AppContainer);
+            return services.RegisterAutofacIoCContainer( out AppContainer);
         }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

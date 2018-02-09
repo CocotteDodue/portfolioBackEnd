@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Portfolio.DAL.Commands
 {
-    public class UnitOfWork : IUnitOfWork
+    internal class UnitOfWork : IUnitOfWork
     {
         private PortfolioOperationsDbContext _dbContext;
 

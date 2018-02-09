@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Portfolio.BusinessModel.Queries
 {
-    public class GetAllTechnologiesQueryHandler : IGetAllTechnologiesQueryHandler
+    internal class GetAllTechnologiesQueryHandler : IGetAllTechnologiesQueryHandler
     {
         public IQueryable<Technology> GetQuery()
         {

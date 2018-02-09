@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Portfolio.Api.ExtensionMethods;
+using Portfolio.Api.DiRegistration;
 using Portfolio.BusinessModel.Commands;
 using Portfolio.BusinessModel.Queries;
 using Portfolio.DAL.Commands;
@@ -18,7 +18,7 @@ namespace Portfolio.Api.DependencyInjection
         {
             IServiceCollection services = InitializeServices();
             IContainer appContainer;
-            services.AddIoC(out appContainer);
+            services.RegisterAutofacIoCContainer(out appContainer);
 
             var readonlyDatabase = appContainer.Resolve<IReadOnlyDatabase>();
 
@@ -34,7 +34,7 @@ namespace Portfolio.Api.DependencyInjection
         {
             IServiceCollection services = InitializeServices();
             IContainer appContainer;
-            services.AddIoC(out appContainer);
+            services.RegisterAutofacIoCContainer(out appContainer);
 
             var handler = appContainer.Resolve<IGetAllTechnologiesQueryHandler>();
 
@@ -46,7 +46,7 @@ namespace Portfolio.Api.DependencyInjection
         {
             IServiceCollection services = InitializeServices();
             IContainer appContainer;
-            services.AddIoC(out appContainer);
+            services.RegisterAutofacIoCContainer(out appContainer);
             GetAllTechnologyiesQuery tq = new GetAllTechnologyiesQuery();
 
             var handlerFactory = appContainer.Resolve<Func<IGetAllTechnologyiesQuery, IGetAllTechnologiesQueryHandler>>();
@@ -60,7 +60,7 @@ namespace Portfolio.Api.DependencyInjection
         {
             IServiceCollection services = InitializeServices();
             IContainer appContainer;
-            services.AddIoC(out appContainer);
+            services.RegisterAutofacIoCContainer(out appContainer);
 
             var queryBus = appContainer.Resolve<IQueryBus>();
             
@@ -72,7 +72,7 @@ namespace Portfolio.Api.DependencyInjection
         {
             IServiceCollection services = InitializeServices();
             IContainer appContainer;
-            services.AddIoC(out appContainer);
+            services.RegisterAutofacIoCContainer(out appContainer);
 
             var operationDatabase = appContainer.Resolve<IOperationsDatabase>();
 
@@ -88,7 +88,7 @@ namespace Portfolio.Api.DependencyInjection
         {
             IServiceCollection services = InitializeServices();
             IContainer appContainer;
-            services.AddIoC(out appContainer);
+            services.RegisterAutofacIoCContainer(out appContainer);
 
             var handler = appContainer.Resolve<IAddTechnologyVersionCommandHandler>();
 
@@ -100,7 +100,7 @@ namespace Portfolio.Api.DependencyInjection
         {
             IServiceCollection services = InitializeServices();
             IContainer appContainer;
-            services.AddIoC(out appContainer);
+            services.RegisterAutofacIoCContainer(out appContainer);
             AddTechnologyVersionCommand addTechCommand = new AddTechnologyVersionCommand();
 
             var handlerFactory = appContainer.Resolve<Func<IAddTechnologyVersionCommand, IAddTechnologyVersionCommandHandler>>();
@@ -114,7 +114,7 @@ namespace Portfolio.Api.DependencyInjection
         {
             IServiceCollection services = InitializeServices();
             IContainer appContainer;
-            services.AddIoC(out appContainer);
+            services.RegisterAutofacIoCContainer(out appContainer);
 
             var queryBus = appContainer.Resolve<ICommandBus>();
 
