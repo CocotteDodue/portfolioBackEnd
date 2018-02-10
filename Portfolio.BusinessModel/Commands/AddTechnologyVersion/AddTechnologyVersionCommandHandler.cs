@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Portfolio.BusinessModel.Commands
 {
-    public class AddTechnologyVersionCommandHandler : IAddTechnologyVersionCommandHandler
+    internal class AddTechnologyVersionCommandHandler : IAddTechnologyVersionCommandHandler
     {
         public void HandleCommand(IAddTechnologyVersionCommand command)
         {
